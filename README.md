@@ -1,4 +1,7 @@
-# <img src="./plugins/godot/icon.svg" style="vertical-align: top; height: 1.3em" /> CodexGD - *Give your code a dress code*.
+<img src="./assets/banner.svg">
+
+<!--# <img src="./plugins/godot/icon.svg" style="vertical-align: top; height: 1.3em" /> CodexGD - *Give your code a dress code*.-->
+<br>
 
 [![Godot 4.x](https://img.shields.io/static/v1?label=Godot&message=4.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)

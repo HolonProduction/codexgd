@@ -49,6 +49,21 @@ func test():
 # valid ö \n""",
             0,
         ),
+        (
+            """rules: {codexgd.rules.no_invalid_chars: {level: "error", options: {codec: "ascii", "string-codec": "utf8"}}}""",
+            """class T:
+                var test = "Hello Wörld"
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.no_invalid_chars: {level: "error", options: {codec: "ascii", "string-codec": "ascii"}}}""",
+            """class T:
+    var test = "Hello Wörld"
+
+# invalid ä \n""",
+            2,
+        ),
         # function-names
         ("""rules: {codexgd.rules.function_names: "error"}""", """""", 0),
         (

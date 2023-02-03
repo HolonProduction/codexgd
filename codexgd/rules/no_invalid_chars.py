@@ -14,33 +14,66 @@ func hello_wörld():
 ```
 
 Options:
-- codec = "ASCII"
+- codec = "ascii"  
 Only chars which can be encoded with this codec will be accepted. Accepts any valid python codec name.
+- string-codec = "utf8"  
+Strings may contain characters that can be encoded with this codec as well.
 """
 
-from typing import Iterable
+from typing import Iterable, cast
+
+from lark import Token
 
 from codexgd.rule import rule, Options
-from codexgd.gdscript import GDScriptCodex, Problem
+from codexgd.gdscript import GDScriptCodex, Problem, ParseTree
 
 
-rule.doc(__doc__, {"codec": "ascii"})
+rule.doc(__doc__, {"codec": "ascii", "string-codec": "utf8"})
+
+
+code: str
+guarded = []
 
 
 @rule.check(GDScriptCodex.plain_text)
-def plain_text(text: str, options: Options) -> Iterable[Problem]:
-    res = []
+def plain_text(text: str, _options: Options) -> Iterable[Problem]:
+    global code
+    code = text
+    return []
 
+
+@rule.check(GDScriptCodex.parse_tree("string"))
+def parse_tree_string(tree: ParseTree, options: Options) -> Iterable[Problem]:
+    content = cast(Token, tree.children[0])
+    line_index = content.line
+    column = content.column
+
+    for line in content.splitlines():
+        for char in line:
+            try:
+                char.encode(str(options["string-codec"]))
+                guarded.append((line_index, column))
+            except UnicodeEncodeError:
+                pass
+            column += 1
+        line_index += 1
+        column = 1
+
+    return []
+
+
+@rule.check(GDScriptCodex.after_all)
+def after_all(options: Options) -> Iterable[Problem]:
     line_index = 1
     column = 1
 
-    for line in text.splitlines():
+    for line in code.splitlines():
         for char in line:
-            try:
-                char.encode(str(options["codec"]))
-            except UnicodeEncodeError:
-                res.append(
-                    Problem(
+            if (line_index, column) not in guarded:
+                try:
+                    char.encode(str(options["codec"]))
+                except UnicodeEncodeError:
+                    yield Problem(
                         (line_index, column),
                         (line_index, column + 1),
                         rule,
@@ -50,9 +83,6 @@ def plain_text(text: str, options: Options) -> Iterable[Problem]:
                         + char
                         + "'.",
                     )
-                )
             column += 1
         line_index += 1
         column = 1
-
-    return res

@@ -128,5 +128,6 @@ Problems are ignored based on the line on which they beginn. Therefore problems 
 
 It is considered good practice to state the reason for disabeling the rule behind the ignore comment in a rational and calm manner...
 ```python
-# codexgd-ignore: no-invalid-chars    Why would CodexGD not allow me to use utf8 inside of strings?! What is the developer even thinking!
+# codexgd-disable: no-invalid-chars    Why would CodexGD not allow me to use utf8 inside of strings?! What is the developer even thinking!
+# codexgd-enable: no-invalid-chars     Guess what. I fixed it!
 ```

@@ -1,0 +1,4 @@
+extends: "recommended"
+
+rules:
+  .rules.always_rule: "error"

@@ -1,0 +1,21 @@
+# Codex based on the official GDScript style guide at https://docs.godotengine.org/en/latest/tutorials/scripting/gdscript/gdscript_styleguide.html.
+
+variables:
+  <private-prefix>: "_"
+
+rules:
+  codexgd.rules.no_invalid_chars:
+    level: "error"
+    options:
+      codec: "ascii"
+  codexgd.rules.function_names:
+    level: "warn"
+    options:
+      private-prefix: <private-prefix>
+      connected-pascal-case: true
+      regex: null
+  codexgd.rules.inner_class_names:
+    level: "warn"
+    options:
+      private-prefix: <private-prefix>
+      regex: null

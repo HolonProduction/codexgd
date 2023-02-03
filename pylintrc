@@ -1,0 +1,8 @@
+[MASTER]
+ignore-patterns=test_.*?py                      # Pytest and pylint are no friends.
+
+[MESSAGES CONTROL]
+disable = 
+      missing-function-docstring,
+      missing-module-docstring,
+      global-statement,                         # Usefull for keeping state inside rules.

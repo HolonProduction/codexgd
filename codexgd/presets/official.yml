@@ -1,13 +1,11 @@
 # Codex based on the official GDScript style guide at https://docs.godotengine.org/en/latest/tutorials/scripting/gdscript/gdscript_styleguide.html.
+# Things that are not mentioned by the official style are not included in this codex file.
 
 variables:
   <private-prefix>: "_"
 
 rules:
-  codexgd.rules.no_invalid_chars:
-    level: "error"
-    options:
-      codec: "ascii"
+  codexgd.rules.end_with_newline: "error"
   codexgd.rules.function_names:
     level: "warn"
     options:

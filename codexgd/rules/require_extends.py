@@ -9,8 +9,8 @@ from codexgd.rule import rule, Options
 
 rule.doc(__doc__, {})
 
-# pylint: disable-next=invalid-name
-found_extends_statement = False
+
+found_extends_statement: bool = False
 
 
 @rule.check(GDScriptCodex.parse_tree("extends_stmt"))

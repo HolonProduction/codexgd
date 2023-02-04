@@ -5,3 +5,13 @@ variables:
 
 rules:
   codexgd.rules.require_extends: "warn"     # Godot will inherit from `RefCounted` anyway so why not write it down.
+  codexgd.rules.no_invalid_chars:           # Keep your programms in ascii and save you the trouble when switching to a language which does not support utf8.
+    level: "error"
+    options:
+      codec: "ascii"
+      string-codec: "utf8"
+  codexgd.rules.function_names:
+    level: "error"
+    options:
+      connected-pascal-case: false
+

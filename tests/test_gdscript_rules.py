@@ -7,6 +7,21 @@ import pytest
 @pytest.mark.parametrize(
     "config_str, code, n",
     [
+        # end-with-newline
+        ("""rules: {codexgd.rules.end_with_newline: "error"}""", """""", 1),
+        (
+            """rules: {codexgd.rules.end_with_newline: "error"}""",
+            """
+""",
+            0,
+        ),
+        ("""rules: {codexgd.rules.end_with_newline: "error"}""", """var a = "h" """, 1),
+        (
+            """rules: {codexgd.rules.end_with_newline: "error"}""",
+            """var a = "h"
+""",
+            0,
+        ),
         # require-extends
         ("""rules: {codexgd.rules.require_extends: "error"}""", """""", 1),
         (
@@ -57,12 +72,28 @@ func test():
             0,
         ),
         (
+            """rules: {codexgd.rules.no_invalid_chars: {level: "error", options: {codec: "ascii", "string-codec": "utf8"}}}""",
+            """class T:
+                var test = "Hello Wörld"
+# invalid ä \n""",
+            1,
+        ),
+        (
             """rules: {codexgd.rules.no_invalid_chars: {level: "error", options: {codec: "ascii", "string-codec": "ascii"}}}""",
             """class T:
     var test = "Hello Wörld"
 
 # invalid ä \n""",
             2,
+        ),
+        (
+            """rules: {codexgd.rules.no_invalid_chars: {level: "error", options: {codec: "ascii", "string-codec": "ascii"}}}""",
+            """class T:
+    var t1 = "Hello Wörld"
+    var t2 = &"Hello Wärld"
+    var t3 = ^"ß"
+""",
+            3,
         ),
         # function-names
         ("""rules: {codexgd.rules.function_names: "error"}""", """""", 0),

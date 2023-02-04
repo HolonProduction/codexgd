@@ -22,7 +22,7 @@ regex = None                    Provide a custom regex for function names. When 
 """
 from typing import Iterable, cast
 
-import re
+import regex
 
 from lark import Token
 
@@ -37,15 +37,17 @@ rule.doc(__doc__, {"private-prefix": "_", "connected-pascal-case": True, "regex"
 def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
     if not options["regex"]:
 
-        regex = r"^(%s|_)?(%s[a-z1-9]+)(_[a-z1-9]+)*$" % (
+        pattern = r"^(%s|_)?(%s[\p{Ll}1-9]+)(_[\p{Ll}1-9]+)*$" % (
             options["private-prefix"],
-            r"(on_[A-Z][a-zA-Z1-9]+)|" if options["connected-pascal-case"] else r"",
+            r"(on_[\p{Lu}][\p{Ll}\p{Lu}1-9]+)|"
+            if options["connected-pascal-case"]
+            else r"",
         )
     else:
-        regex = str(options["regex"])
+        pattern = str(options["regex"])
 
     name = cast(Token, tree.children[0])
-    if not re.match(regex, name):
+    if not regex.match(pattern, name):
         yield Problem(
             *positions_from_token(name),
             rule,

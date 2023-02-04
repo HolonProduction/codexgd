@@ -17,3 +17,8 @@ rules:
     options:
       private-prefix: <private-prefix>
       regex: null
+  codexgd.rules.enum_names:
+    level: "warn"
+    options:
+      private-prefix: <private-prefix>
+      regex: null

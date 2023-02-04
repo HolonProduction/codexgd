@@ -182,6 +182,38 @@ class _PrivateClass: pass
 """,
             1,
         ),
+        # enum-names
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """""", 0),
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """enum {}""", 0),
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """enum Test {}""", 0),
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """enum Test2D {}""", 0),
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """enum TestTest {}""", 0),
+        ("""rules: {codexgd.rules.enum_names: "error"}""", """enum _TestTest {}""", 0),
+        (
+            """rules: {codexgd.rules.enum_names: {level: "error", options: {private-prefix: ""}}}""",
+            """enum _TestTest {}""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.enum_names: {level: "error", options: {private-prefix: ""}}}""",
+            """enum TestTest {}""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.enum_names: {level: "error", options: {private-prefix: "__"}}}""",
+            """enum TestTest {}""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.enum_names: {level: "error", options: {private-prefix: "__"}}}""",
+            """enum _TestTest {}""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.enum_names: {level: "error", options: {private-prefix: "__"}}}""",
+            """enum __TestTest {}""",
+            0,
+        ),
     ],
 )
 def test_rule(config_str, code, n, config_file):

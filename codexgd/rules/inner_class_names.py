@@ -20,7 +20,7 @@ regex = None                    Provide a custom regex for class names. When thi
 """
 from typing import Iterable, cast
 
-import re
+import regex
 
 from lark import Token
 
@@ -34,12 +34,12 @@ rule.doc(__doc__, {"private-prefix": "_", "regex": None})
 @rule.check(GDScriptCodex.parse_tree("class_def"))
 def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
     if not options["regex"]:
-        regex = r"^(%s)?([A-Z]+[a-z1-9]*)+$" % options["private-prefix"]
+        pattern = r"^(%s)?(\p{Lu}+[\p{Ll}1-9]*)+$" % options["private-prefix"]
     else:
-        regex = str(options["regex"])
+        pattern = str(options["regex"])
 
     name = cast(Token, tree.children[0])
-    if not re.match(regex, name):
+    if not regex.match(pattern, name):
         yield Problem(
             *positions_from_token(name),
             rule,

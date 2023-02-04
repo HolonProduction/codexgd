@@ -25,6 +25,7 @@ dependencies = [
   "gdtoolkit@git+https://github.com/Scony/godot-gdscript-toolkit.git",
   "pyyaml",
   "lark",
+  "regex",
 ]
 
 [project.urls]

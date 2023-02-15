@@ -5,6 +5,7 @@ import pytest
 from codexgd import Codex
 from codexgd.gdscript import GDScriptCodex
 from codexgd.codex import ConfigurationError
+from codexgd.rule import Severity
 from .common import config_file
 
 
@@ -104,7 +105,7 @@ rules:
 def test_load_severity(config_str, expected, config_file, Implementation):
     codex = Implementation(config_file(config_str), True)
     assert len(codex.rules) == 1
-    assert codex.rules[0].severity == expected
+    assert codex.rules[0].severity == Severity(expected)
 
 
 def test_load_invalid_option(Implementation):

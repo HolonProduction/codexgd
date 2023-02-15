@@ -13,7 +13,7 @@ CodexGD is a configurable and extendable Godot style analyzer written in python.
 
 ## :electric_plug: Installation
 In the future CodexGD will be available via PyPi and the Godot Asset Lib. Until then you will have to set it up manually. Start by cloning this repo. 
-To use the backend you will need a python 3.11 installation. Install the cloned repo as python module by calling the following command in the cloned repo's root folder.
+To use the backend you will need a python installation. Install the cloned repo as python module by calling the following command in the cloned repo's root folder.
 ```shell
 > python -m pip install -e .
 ```

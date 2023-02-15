@@ -1,17 +1,11 @@
-from typing import (
-    Dict,
+from typing import Dict, Callable, Iterable, Union, List, cast, Tuple, Optional
+from typing_extensions import (
     TypeVarTuple,
     Protocol,
-    Callable,
-    Iterable,
-    Union,
-    List,
     Any,
-    cast,
-    Tuple,
-    Optional,
+    Unpack,
 )
-from enum import StrEnum, unique, auto
+from enum import Enum, unique
 
 import inspect
 import os
@@ -26,12 +20,12 @@ class RuleRegistrationError(CodexGDError):
 
 
 @unique
-class Severity(StrEnum):
+class Severity(Enum):
     """The way a certain rule is treated when reporting problems."""
 
-    OFF = auto()
-    WARN = auto()
-    ERROR = auto()
+    OFF = "off"
+    WARN = "warn"
+    ERROR = "error"
 
 
 Options = Dict[str, Union[str, int, float, bool, None]]
@@ -43,18 +37,18 @@ class CallbackDict(Protocol):
     """Protocoll for a dictionary with entries that use generics."""
 
     def __getitem__(
-        self, item: Callback[*Parameter]
-    ) -> List[Callable[[*Parameter, Options], Iterable[Problem]]]:
+        self, item: Callback[Unpack[Parameter]]
+    ) -> List[Callable[[Unpack[Parameter], Options], Iterable[Problem]]]:
         ...
 
     def __setitem__(
         self,
-        item: Callback[*Parameter],
-        value: List[Callable[[*Parameter, Options], Iterable[Problem]]],
+        item: Callback[Unpack[Parameter]],
+        value: List[Callable[[Unpack[Parameter], Options], Iterable[Problem]]],
     ):
         ...
 
-    def values(self) -> List[Callable[[*Tuple[Any, ...], Options], Iterable[Problem]]]:
+    def values(self) -> List[Callable[[Unpack[Tuple[Any, ...]], Options], Iterable[Problem]]]:
         ...
 
     def __contains__(self, item: Any) -> bool:
@@ -116,14 +110,14 @@ class Rule:
         self.origin = os.path.normpath(os.path.realpath(inspect.stack()[1][1]))
 
     def check(
-        self, callback: Callback[*Parameter]
+        self, callback: Callback[Unpack[Parameter]]
     ) -> Callable[
-        [Callable[[*Parameter, Options], Iterable[Problem]]],
-        Callable[[*Parameter, Options], Iterable[Problem]],
+        [Callable[[Unpack[Parameter], Options], Iterable[Problem]]],
+        Callable[[Unpack[Parameter], Options], Iterable[Problem]],
     ]:
         def decorator(
-            callable_to_connect: Callable[[*Parameter, Options], Iterable[Problem]]
-        ) -> Callable[[*Parameter, Options], Iterable[Problem]]:
+            callable_to_connect: Callable[[Unpack[Parameter], Options], Iterable[Problem]]
+        ) -> Callable[[Unpack[Parameter], Options], Iterable[Problem]]:
             if callback not in self.callbacks:
                 self.callbacks[callback] = []
             if callable_to_connect not in self.callbacks[callback]:

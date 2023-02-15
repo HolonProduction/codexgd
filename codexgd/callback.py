@@ -1,16 +1,17 @@
-from typing import TypeVar, TypeVarTuple, Generic, Self, Type
+from typing import Generic
+from typing_extensions import TypeVar, TypeVarTuple, Self, Type, Unpack
 
 Values = TypeVarTuple("Values")
 
 
-class Callback(Generic[*Values]):
+class Callback(Generic[Unpack[Values]]):
     """A callback allows the rules to hook into some processing step of the codex."""
 
 
 Identifier = TypeVar("Identifier")
 
 
-class DynamicCallback(Callback[*Values], Generic[*Values, Identifier]):
+class DynamicCallback(Callback[Unpack[Values]], Generic[Unpack[Values], Identifier]):
     """
     A dynamic callback allows to pass an identifier.
     This allows the codex to notify only certain group of listeners.

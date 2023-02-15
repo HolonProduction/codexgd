@@ -95,7 +95,7 @@ def main():
                     )
                 else:
                     print(
-                        problem.rule.severity.upper(),
+                        problem.rule.severity.value.upper(),
                         ": ",
                         problem.info,
                         "\t",

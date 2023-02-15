@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "codexgd"
 description = "A configurable and extendable Godot style analyzer."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 license = {file = "LICENSE"}
 authors = [{ name="HolonProduction", email="holonproduction@gmail.com" }]
 keywords = ["lint", "godot", "gdscript", "style", "analyzer"]
@@ -15,6 +15,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -26,6 +29,7 @@ dependencies = [
   "pyyaml",
   "lark",
   "regex",
+  "typing-extensions >=4.5, <5"
 ]
 
 [project.urls]

@@ -1,4 +1,5 @@
-from typing import List, Iterable, TypeVarTuple, Any, Dict, Optional, Callable
+from typing import List, Iterable, Dict, Optional, Callable, Tuple
+from typing_extensions import TypeVarTuple, Any, Unpack
 
 from abc import ABC
 
@@ -27,15 +28,15 @@ class Codex(ABC):
     """Applies rules onto given data."""
 
     rules: List[Rule]
-    before_all = Callback[()]()
-    after_all = Callback[()]()
+    before_all = Callback[Unpack[Tuple[()]]]()
+    after_all = Callback[Unpack[Tuple[()]]]()
 
     def __init__(self, codex_file, unsafe: bool = False, generate_cache: bool = False):
         self.rules = []
         self._load_file(codex_file, unsafe, generate_cache)
 
     def notify(
-        self, callback: Callback[*Parameter], *values: *Parameter
+        self, callback: Callback[Unpack[Parameter]], *values: Unpack[Parameter]
     ) -> Iterable[Problem]:
         for r in self.rules:
             if r.severity == Severity.OFF:

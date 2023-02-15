@@ -2,7 +2,6 @@
 
 End your file with a newline.
 """
-
 from codexgd.rule import rule, Problem, Options
 from codexgd.gdscript import GDScriptCodex
 

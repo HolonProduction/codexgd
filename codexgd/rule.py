@@ -48,7 +48,9 @@ class CallbackDict(Protocol):
     ):
         ...
 
-    def values(self) -> List[Callable[[Unpack[Tuple[Any, ...]], Options], Iterable[Problem]]]:
+    def values(
+        self,
+    ) -> List[Callable[[Unpack[Tuple[Any, ...]], Options], Iterable[Problem]]]:
         ...
 
     def __contains__(self, item: Any) -> bool:
@@ -116,7 +118,9 @@ class Rule:
         Callable[[Unpack[Parameter], Options], Iterable[Problem]],
     ]:
         def decorator(
-            callable_to_connect: Callable[[Unpack[Parameter], Options], Iterable[Problem]]
+            callable_to_connect: Callable[
+                [Unpack[Parameter], Options], Iterable[Problem]
+            ]
         ) -> Callable[[Unpack[Parameter], Options], Iterable[Problem]]:
             if callback not in self.callbacks:
                 self.callbacks[callback] = []

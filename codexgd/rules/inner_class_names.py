@@ -18,7 +18,7 @@ private-prefix = "_"            The prefix for private classes. Supports regex.
 
 regex = None                    Provide a custom regex for class names. When this is set all other options will be ignored.
 """
-from typing import Iterable, cast
+from typing import cast
 
 import regex
 
@@ -26,15 +26,16 @@ from lark import Token
 
 from codexgd.gdscript import GDScriptCodex, Problem, ParseTree, positions_from_token
 from codexgd.rule import rule, Options
+from codexgd.rules.common import PASCAL_CASE
 
 
 rule.doc(__doc__, {"private-prefix": "_", "regex": None})
 
 
 @rule.check(GDScriptCodex.parse_tree("class_def"))
-def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
+def parse_tree_element(tree: ParseTree, options: Options):
     if not options["regex"]:
-        pattern = r"^(%s)?(\p{Lu}+[\p{Ll}1-9]*)+$" % options["private-prefix"]
+        pattern = rf"^({options['private-prefix']})?{PASCAL_CASE}$"
     else:
         pattern = str(options["regex"])
 
@@ -43,5 +44,5 @@ def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
         yield Problem(
             *positions_from_token(name),
             rule,
-            "The inner class name '" + name + "' is not formated correctly."
+            "The inner class name '" + name + "' is not formated correctly.",
         )

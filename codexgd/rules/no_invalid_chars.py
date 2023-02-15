@@ -19,8 +19,7 @@ Only chars which can be encoded with this codec will be accepted. Accepts any va
 - string-codec = "utf8"  
 Strings may contain characters that can be encoded with this codec as well.
 """
-
-from typing import Iterable, cast
+from typing import cast
 
 from lark import Token
 
@@ -36,17 +35,17 @@ guarded = []
 
 
 @rule.check(GDScriptCodex.plain_text)
-def plain_text(text: str, _options: Options) -> Iterable[Problem]:
+def plain_text(text: str, _options: Options):
     global code
     code = text
     return []
 
 
 @rule.check(GDScriptCodex.parse_tree("string"))
-def parse_tree_string(tree: ParseTree, options: Options) -> Iterable[Problem]:
+def parse_tree_string(tree: ParseTree, options: Options):
     content = cast(Token, tree.children[0])
-    line_index = content.line
-    column = content.column
+    line_index = cast(int, content.line)
+    column = cast(int, content.column)
 
     for line in content.splitlines():
         for char in line:
@@ -63,7 +62,7 @@ def parse_tree_string(tree: ParseTree, options: Options) -> Iterable[Problem]:
 
 
 @rule.check(GDScriptCodex.after_all)
-def after_all(options: Options) -> Iterable[Problem]:
+def after_all(options: Options):
     line_index = 1
     column = 1
 

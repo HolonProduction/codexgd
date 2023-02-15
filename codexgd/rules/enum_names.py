@@ -2,23 +2,23 @@
 
 Enums should be named in PascalCase which may have a prefix to indicate private enums.
 """
-from typing import cast, Iterable
+from typing import cast
 import regex
+
+from lark import Token
 
 from codexgd.rule import rule, Problem, Options
 from codexgd.gdscript import GDScriptCodex, ParseTree, positions_from_token
-
-from lark import Token
+from codexgd.rules.common import PASCAL_CASE
 
 
 rule.doc(__doc__, {"private-prefix": "_", "regex": None})
 
 
 @rule.check(GDScriptCodex.parse_tree("enum_named"))
-def parse_tree_enum_named(tree: ParseTree, options: Options) -> Iterable[Problem]:
+def parse_tree_enum_named(tree: ParseTree, options: Options):
     if not options["regex"]:
-
-        pattern = r"^(%s)?(\p{Lu}[\p{Ll}1-9]*)+$" % options["private-prefix"]
+        pattern = rf"^({options['private-prefix']})?{PASCAL_CASE}$"
     else:
         pattern = str(options["regex"])
 
@@ -27,5 +27,5 @@ def parse_tree_enum_named(tree: ParseTree, options: Options) -> Iterable[Problem
         yield Problem(
             *positions_from_token(name),
             rule,
-            "The enum name '" + name + "' is not formated correctly."
+            f"The enum name '{name}' is not formated correctly.",
         )

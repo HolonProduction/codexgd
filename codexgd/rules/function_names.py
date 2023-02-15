@@ -20,7 +20,7 @@ private-prefix = "_"            The prefix for private functions. Supports regex
 connected-pascal-case = True    Whether to allow PascalCase for connected functions. (`on_BodyEntered_kinematic_body`)
 regex = None                    Provide a custom regex for function names. When this is set all other options will be ignored.
 """
-from typing import Iterable, cast
+from typing import cast
 
 import regex
 
@@ -34,14 +34,15 @@ rule.doc(__doc__, {"private-prefix": "_", "connected-pascal-case": True, "regex"
 
 
 @rule.check(GDScriptCodex.parse_tree("func_header"))
-def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
+def parse_tree_element(tree: ParseTree, options: Options):
     if not options["regex"]:
-
-        pattern = r"^(%s|_)?(%s[\p{Ll}1-9]+)(_[\p{Ll}1-9]+)*$" % (
-            options["private-prefix"],
-            r"(on_[\p{Lu}][\p{Ll}\p{Lu}1-9]+)|"
-            if options["connected-pascal-case"]
-            else r"",
+        pattern = (
+            rf"^({options['private-prefix']}|_)?(%s[\p{{Ll}}1-9]+)(_[\p{{Ll}}1-9]+)*$"
+            % (
+                r"(on_[\p{Lu}][\p{Ll}\p{Lu}1-9]+)|"
+                if options["connected-pascal-case"]
+                else r"",
+            )
         )
     else:
         pattern = str(options["regex"])
@@ -51,5 +52,5 @@ def parse_tree_element(tree: ParseTree, options: Options) -> Iterable[Problem]:
         yield Problem(
             *positions_from_token(name),
             rule,
-            "The function name '" + name + "' is not formated correctly."
+            "The function name '" + name + "' is not formated correctly.",
         )

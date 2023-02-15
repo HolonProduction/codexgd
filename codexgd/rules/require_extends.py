@@ -2,7 +2,6 @@
 
 Each file has to use the `extends` statement.
 """
-
 from codexgd.gdscript import GDScriptCodex, Problem, ParseTree, COMPLETE_FILE
 from codexgd.rule import rule, Options
 

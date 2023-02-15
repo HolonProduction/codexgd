@@ -4,6 +4,7 @@
 <br>
 
 [![Godot 4.x](https://img.shields.io/static/v1?label=Godot&message=4.x&color=grey&logo=godotengine&logoColor=white&labelColor=478cbf)](https://godotengine.org)
+[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen.svg)](https://github.com/PyCQA/pylint)
 

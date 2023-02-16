@@ -1,5 +1,5 @@
-SNAKE_CASE = r"[\p{Ll}1-9]+(_[\p{Ll}1-9])*"
+SNAKE_CASE = r"[\p{Ll}1-9]+(_[\p{Ll}1-9]+)*"
 PASCAL_CASE = r"([\p{Lu}1-9][\p{Ll}1-9]*)+"
 CAMEL_CASE = r"[\p{Ll}1-9]+([\p{Lu}1-9][\p{Ll}1-9]*)*"
 CONSTANT_CASE = r"[\p{Lu}1-9]+(_[\p{Lu}1-9]+)*"
-KEBAB_CASE = r"[\p{Ll}1-9]+(-[\p{Ll}1-9])*"
+KEBAB_CASE = r"[\p{Ll}1-9]+(-[\p{Ll}1-9]+)*"

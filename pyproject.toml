@@ -25,11 +25,12 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-  "gdtoolkit@git+https://github.com/Scony/godot-gdscript-toolkit.git",
-  "pyyaml",
-  "lark",
+  "typing-extensions ~=4.5",
+  "pyyaml ~=6.0",
+  "docopt-ng ~=0.8.1",
   "regex",
-  "typing-extensions >=4.5, <5",
+  "gdtoolkit@git+https://github.com/Scony/godot-gdscript-toolkit.git",
+  "lark ~=1.1.5",
 ]
 
 [project.urls]
@@ -50,8 +51,8 @@ packages = ["codexgd"]
 
 [tool.hatch.envs.default]
 dependencies = [
-  "pylint",
-  "black",
+  "pylint ~=2.16",
+  "black ~=23.1",
 ]
 
 [tool.hatch.envs.default.scripts]
@@ -59,9 +60,9 @@ test = "hatch run test:all"
 
 [tool.hatch.envs.test]
 dependencies = [
-  "pytest",
-  "black",
-  "pylint",
+  "pytest ~=7.2",
+  "black ~=23.1",
+  "pylint ~=2.16",
 ]
 
 [tool.hatch.envs.test.scripts]

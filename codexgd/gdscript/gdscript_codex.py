@@ -72,9 +72,12 @@ class GDScriptCodex(Codex):
             if rule_name not in ignore_map:
                 ignore_map[rule_name] = []
 
+        comment_pattern = re.compile(
+            r"codexgd-(?P<type>disable|enable|ignore)(:(?P<rules>\s*[^,\s]+(\s*,\s*[^,\s]+)*))?",
+        )
+
         for comment in comments.children:
-            match = re.search(
-                r"codexgd-(?P<type>disable|enable|ignore)(:(?P<rules>\s*[^,\s]+(\s*,\s*[^,\s]+)*))?",
+            match = comment_pattern.search(
                 cast(Token, comment),
             )
             if match:
@@ -84,13 +87,13 @@ class GDScriptCodex(Codex):
                         rule_name = rule.strip()
                         add(rule_name)
                         ignore_map[rule_name].append(
-                            (match.group("type"), cast(Token, comment).line)
+                            (match.group("type"), cast(int, cast(Token, comment).line))
                         )
                 else:
                     for rule in self.rules:
                         add(rule.name)
                         ignore_map[rule.name].append(
-                            (match.group("type"), cast(Token, comment).line)
+                            (match.group("type"), cast(int, cast(Token, comment).line))
                         )
 
         last_line = len(code.split("\n"))
@@ -116,7 +119,7 @@ class GDScriptCodex(Codex):
                         yield problem
                     break
                 if step[1] <= resolve_start(problem.start):
-                    enabled = True if step[0] == "enable" else False
+                    enabled = step[0] == "enable"
                 if step[1] >= resolve_start(problem.start):
                     if enabled:
                         yield problem

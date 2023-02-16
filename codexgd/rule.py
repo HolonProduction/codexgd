@@ -1,14 +1,16 @@
 from typing import Dict, Callable, Iterable, Union, List, cast, Tuple, Optional
+
+from enum import Enum, unique
+
+import inspect
+import os
+
 from typing_extensions import (
     TypeVarTuple,
     Protocol,
     Any,
     Unpack,
 )
-from enum import Enum, unique
-
-import inspect
-import os
 
 from .problem import Problem
 from .exceptions import CodexGDError

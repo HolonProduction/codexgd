@@ -5,4 +5,5 @@ ignore-patterns=test_.*?py                      # Pytest and pylint are no frien
 disable = 
       missing-function-docstring,
       missing-module-docstring,
+      too-few-public-methods,
       global-statement,                         # Usefull for keeping state inside rules.

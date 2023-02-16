@@ -6,13 +6,11 @@ with an API that is more powerfull than this CLI.
 
 Usage:
     codexgd <dir> [options]
-    codexgd <codex> <gdscript>... [options]
 
 Options:
     -h --help           Show this screen.
     -v --version        Show the current version.
-    --encoding=codec    The encoding of the files. [default: "utf-8"]
-    --load-unsafe-code  Load untrusted code from outside the CodexGD package if the codex file says so.
+    --load-unsafe-code  Load untrusted code from outside the CodexGD package if requested.
     --json              Output json data.
     --
 
@@ -35,47 +33,28 @@ from codexgd.__about__ import __version__
 def main():
     arguments = docopt(__doc__, version=__version__)
 
-    if arguments["<dir>"]:
-        try:
-            with open(
-                os.path.join(arguments["<dir>"], "codex.yml"),
-                "r",
-                encoding=arguments["--encoding"],
-            ) as file:
-                codex = GDScriptCodex(file, arguments["--load-unsafe-code"])
-        except (FileExistsError, CodexGDError) as error:
-            if not arguments["--json"]:
-                print(error)
-            sys.exit(2)
-    elif arguments["<codex>"]:
-        try:
-            with open(
-                arguments["<codex>"], "r", encoding=arguments["--encoding"]
-            ) as file:
-                codex = GDScriptCodex(file, arguments["--load-unsafe-code"])
-        except (FileExistsError, CodexGDError) as error:
-            if not arguments["--json"]:
-                print(error)
-            sys.exit(2)
-    else:
+    try:
+        with open(
+            os.path.join(arguments["<dir>"], "codex.yml"),
+            "r",
+            encoding="utf8",
+        ) as file:
+            codex = GDScriptCodex(file, arguments["--load-unsafe-code"])
+    except (FileExistsError, CodexGDError) as error:
         if not arguments["--json"]:
-            print("No configuration was provided.")
+            print(error)
         sys.exit(2)
 
-    file_paths = []
-    file_paths += arguments["<gdscript>"]
-
-    if arguments["<dir>"]:
-        file_paths += glob.glob(
-            os.path.join(arguments["<dir>"], "**", "*.gd"), recursive=True
-        )
+    file_paths = glob.glob(
+        os.path.join(arguments["<dir>"], "**", "*.gd"), recursive=True
+    )
 
     if arguments["--json"]:
         print("[", end="")
 
     found_problems = 0
     for file_path in file_paths:
-        with open(file_path, "r", encoding=arguments["--encoding"]) as file:
+        with open(file_path, "r", encoding="utf8") as file:
             for problem in codex.check(file):
                 if arguments["--json"]:
                     if found_problems > 0:

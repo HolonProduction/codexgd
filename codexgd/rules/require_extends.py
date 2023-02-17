@@ -1,12 +1,25 @@
 """require-extends
 
 Each file has to use the `extends` statement.
+
+Good:
+```gdscript
+extends RefCounted
+
+func do_things():
+    pass
+```
+Bad:
+```gdscript
+func do_things():
+    pass
+```
 """
 from codexgd.gdscript import GDScriptCodex, Problem, ParseTree, COMPLETE_FILE
 from codexgd.rule import rule, Options
 
 
-rule.doc(__doc__, {})
+rule.doc(__doc__)
 
 
 found_extends_statement: bool = False

@@ -1,6 +1,18 @@
 """end-with-newline
 
 End your file with a newline.
+
+Good:
+```gdscript
+func hello_world():
+    pass
+
+```
+Bad:
+```gdscript
+func hello_world():
+    pass
+```
 """
 from codexgd.rule import rule, Problem, Options
 from codexgd.gdscript import GDScriptCodex

@@ -8,15 +8,15 @@ func hello_world():
     pass
 ```
 Bad:
-```
+```gdscript
 func hello_wörld():
     pass
 ```
 
 Options:
-- codec = "ascii"  
-Only chars which can be encoded with this codec will be accepted. Accepts any valid python codec name.
-- string-codec = "utf8"  
+- `codec = "ascii"`  
+Only chars encodable with this codec will be accepted. Accepts any valid python codec name.
+- `string-codec = "utf8"`  
 Strings may contain characters that can be encoded with this codec as well.
 """
 from typing import cast

@@ -1,6 +1,23 @@
 """enum-names
 
 Enums should be named in PascalCase which may have a prefix to indicate private enums.
+
+Good:
+```gdscript
+enum SomeImportantStuff {}
+enum _PrivateState {}
+```
+Bad:
+```gdscript
+enum COLLECTION_OF_CONSTANTS {}
+
+Options:
+- `private-prefix = "_"`  
+The prefix for private enums. Supports regex.
+**Use the corresponding variable! (Except you know what you are doing.)**
+- `regex = None`  
+Provide a custom regex for enum names. When this is set all other options will be ignored.
+```
 """
 from typing import cast
 import regex

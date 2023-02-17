@@ -9,16 +9,18 @@ func public_method()
 func 2d_stuff()
 ```
 Bad:
-```
+```gdscript
 func PascalCase()
 ```
 
 Options:
+- `private-prefix = "_"`  
+The prefix for private functions. Supports regex.
 **Use the corresponding variable! (Except you know what you are doing.)**
-private-prefix = "_"            The prefix for private functions. Supports regex.
-
-connected-pascal-case = True    Whether to allow PascalCase for connected functions. (`on_BodyEntered_kinematic_body`)
-regex = None                    Provide a custom regex for function names. When this is set all other options will be ignored.
+- `connected-pascal-case = True`  
+Whether to allow PascalCase for connected functions (`on_BodyEntered_kinematic_body`).
+- `regex = None`  
+Provide a custom regex for function names. When this is set all other options will be ignored.
 """
 from typing import cast
 

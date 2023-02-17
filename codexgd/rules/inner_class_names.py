@@ -8,15 +8,16 @@ class PascalCase
 class _PrivateClass
 ```
 Bad:
-```
+```gdscript
 class snake_case
 ```
 
 Options:
+- `private-prefix = "_"`  
+The prefix for private classes. Supports regex.
 **Use the corresponding variable! (Except you know what you are doing.)**
-private-prefix = "_"            The prefix for private classes. Supports regex.
-
-regex = None                    Provide a custom regex for class names. When this is set all other options will be ignored.
+- `regex = None`  
+Provide a custom regex for class names. When this is set all other options will be ignored.
 """
 from typing import cast
 

@@ -136,6 +136,35 @@ rules:
     assert len(problems) == 1
 
 
+def test_load_variables(config_file, Implementation):
+    config = """
+variables:
+    a: "a"
+    b: "b"
+    c: 1
+"""
+    codex = Implementation(config_file(config), True)
+    assert codex.variables == {"a": "a", "b": "b", "c": 1}
+
+
+def test_use_variables(config_file, Implementation):
+    config = """
+variables:
+    severity: "warn"
+    opt: "hello world"
+rules:
+    .rules.never_rule:
+        level: <severity>
+        options:
+            dummy-option: <opt>
+"""
+    codex = Implementation(config_file(config), True)
+    assert codex.variables == {"severity": "warn", "opt": "hello world"}
+    rule = codex.rules[0]
+    assert rule.options == {"dummy-option": "hello world"}
+    assert rule.severity == Severity.WARN
+
+
 def test_multiple_codexes(config_file, Implementation):
     config = """
 rules:

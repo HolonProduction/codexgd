@@ -2,23 +2,24 @@
 # Things that are not mentioned by the official style are not included in this codex file.
 
 variables:
-  <private-prefix>: "_"
+  private-prefix: "_"
+  base-severity: "warn"
 
 rules:
-  codexgd.rules.end_with_newline: "error"
+  codexgd.rules.end_with_newline: <base-severity>
   codexgd.rules.function_names:
-    level: "warn"
+    level: <base-severity>
     options:
       private-prefix: <private-prefix>
       connected-pascal-case: true
       regex: null
   codexgd.rules.inner_class_names:
-    level: "warn"
+    level: <base-severity>
     options:
       private-prefix: <private-prefix>
       regex: null
   codexgd.rules.enum_names:
-    level: "warn"
+    level: <base-severity>
     options:
       private-prefix: <private-prefix>
       regex: null

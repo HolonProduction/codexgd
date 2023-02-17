@@ -3,6 +3,7 @@ from typing import List, Iterable, Dict, Optional, Callable, Tuple
 from abc import ABC
 import os
 import sys
+import re
 import importlib.util
 from importlib.machinery import ModuleSpec
 
@@ -155,10 +156,12 @@ class Codex(ABC):
         loaded_rule: Rule = list(filter(compare(spec), self.rules))[0]
 
         if isinstance(rule_data[1], str):
-            loaded_rule.severity = Severity(rule_data[1])
+            loaded_rule.severity = Severity(self._resolve_variables(rule_data[1]))
         elif isinstance(rule_data[1], dict):
             if "level" in rule_data[1].keys():
-                loaded_rule.severity = Severity(rule_data[1]["level"])
+                loaded_rule.severity = Severity(
+                    self._resolve_variables(rule_data[1]["level"])
+                )
             if "options" in rule_data[1].keys():
                 for option in rule_data[1]["options"]:
                     if option not in loaded_rule.options:
@@ -166,11 +169,17 @@ class Codex(ABC):
                             f"'{option}' is not a valid option of the rule '{loaded_rule.name}'."
                         )
 
-                    if rule_data[1]["options"][option] in self.variables:
-                        value = self.variables[rule_data[1]["options"][option]]
-                    else:
-                        value = rule_data[1]["options"][option]
-                    loaded_rule.options[option] = value
+                    loaded_rule.options[option] = self._resolve_variables(
+                        rule_data[1]["options"][option]
+                    )
+
+    def _resolve_variables(self, value: Any) -> Any:
+        # TODO: Support advanced operations with variables.
+        if isinstance(value, str):
+            usage = re.match(r"^<(?P<name>[^<>]+)>$", value)
+            if usage and usage.group("name") in self.variables:
+                return self.variables[usage.group("name")]
+        return value
 
     def _load_rules(
         self, data: Dict, file_name: Optional[str], unsafe: bool, generate_cache: bool

@@ -28,3 +28,7 @@ rules:
     options:
       regex: null
   codexgd.rules.trailing_commas: <base-severity>
+  codexgd.rules.line_length:
+    level: <base-severity>
+    options:
+      max-length: 100

@@ -22,6 +22,19 @@ import pytest
 """,
             0,
         ),
+        # line-length
+        ("""rules: {codexgd.rules.line_length: "error"}""", """""", 0),
+        ("""rules: {codexgd.rules.line_length: "error"}""", """var a = 10""", 0),
+        (
+            """rules: {codexgd.rules.line_length: "error"}""",
+            """var a = 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.line_length: "error"}""",
+            """var a = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001""",
+            1,
+        ),
         # trailing-commas
         ("""rules: {codexgd.rules.trailing_commas: "error"}""", """""", 0),
         (

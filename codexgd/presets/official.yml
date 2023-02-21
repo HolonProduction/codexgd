@@ -27,3 +27,4 @@ rules:
     level: <base-severity>
     options:
       regex: null
+  codexgd.rules.trailing_commas: <base-severity>

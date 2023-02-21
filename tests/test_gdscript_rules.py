@@ -22,6 +22,54 @@ import pytest
 """,
             0,
         ),
+        # trailing-commas
+        ("""rules: {codexgd.rules.trailing_commas: "error"}""", """""", 0),
+        (
+            """rules: {codexgd.rules.trailing_commas: "error"}""",
+            """var a = ["1", 2, 3]
+var b = [
+    "1",
+    2,
+    3,
+]
+var c = {"a": 1, "b": 2, 3: "c"}
+var d = {
+    "a": 1,
+    "b": 2,
+    3: "c",
+}
+enum {A, B, C}
+enum {
+    A,
+    B,
+    C,
+}
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.trailing_commas: "error"}""",
+            """var a = ["1", 2, 3,]
+var b = [
+    "1",
+    2,
+    3
+]
+var c = {"a": 1, "b": 2, 3: "c",}
+var d = {
+    "a": 1,
+    "b": 2,
+    3: "c"
+}
+enum {A, B, C,}
+enum {
+    A,
+    B,
+    C
+}
+""",
+            6,
+        ),
         # require-extends
         ("""rules: {codexgd.rules.require_extends: "error"}""", """""", 1),
         (

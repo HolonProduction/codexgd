@@ -25,7 +25,7 @@ import regex
 from lark import Token
 
 from codexgd.rule import rule, Problem, Options
-from codexgd.gdscript import GDScriptCodex, ParseTree, positions_from_token
+from codexgd.gdscript import GDScriptCodex, ParseTree, positions_from_element
 from codexgd.rules.common import PASCAL_CASE
 
 
@@ -42,7 +42,7 @@ def parse_tree_enum_named(tree: ParseTree, options: Options):
     name = cast(Token, tree.children[0])
     if not regex.match(pattern, name):
         yield Problem(
-            *positions_from_token(name),
+            *positions_from_element(name),
             rule,
             f"The enum name '{name}' is not formated correctly.",
         )

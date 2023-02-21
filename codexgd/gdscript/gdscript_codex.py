@@ -3,7 +3,7 @@ from typing import Iterable, TextIO, List, cast, Dict, Tuple
 from io import StringIO
 import re
 
-from lark import Tree as ParseTree, Visitor, Token
+from lark import Tree, Visitor, Token
 from gdtoolkit.parser import parser
 
 from ..codex import Codex
@@ -12,6 +12,7 @@ from ..callback import Callback, DynamicCallback
 
 
 IgnoreMap = Dict[str, List[Tuple[str, int]]]
+ParseTree = Tree[Token]
 
 
 class ParseTreeCallback(DynamicCallback[ParseTree, str]):

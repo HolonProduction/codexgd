@@ -139,6 +139,41 @@ func _on_SignalName_private(): pass
 """,
             2,
         ),
+        # class-names
+        ("""rules: {codexgd.rules.class_names: "error"}""", """""", 0),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """
+var test := 10
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """class_name HelloWorld""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """class_name World2D""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """class_name WRONG_NAME""",
+            1,
+        ),
+        ("""rules: {codexgd.rules.class_names: "error"}""", """class_name nope""", 1),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """class_name _NotValidIGuess""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.class_names: "error"}""",
+            """class_name the_name""",
+            1,
+        ),
         # inner-class-names
         ("""rules: {codexgd.rules.inner_class_names: "error"}""", """""", 0),
         (

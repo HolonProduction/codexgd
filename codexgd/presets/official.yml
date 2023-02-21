@@ -23,3 +23,7 @@ rules:
     options:
       private-prefix: <private-prefix>
       regex: null
+  codexgd.rules.class_names:
+    level: <base-severity>
+    options:
+      regex: null

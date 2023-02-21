@@ -29,7 +29,7 @@ import regex
 from lark import Token
 
 from codexgd.rule import rule, Options
-from codexgd.gdscript import GDScriptCodex, Problem, ParseTree, positions_from_token
+from codexgd.gdscript import GDScriptCodex, Problem, ParseTree, positions_from_element
 
 
 rule.doc(__doc__, {"private-prefix": "_", "connected-pascal-case": True, "regex": None})
@@ -52,7 +52,7 @@ def parse_tree_element(tree: ParseTree, options: Options):
     name = cast(Token, tree.children[0])
     if not regex.match(pattern, name):
         yield Problem(
-            *positions_from_token(name),
+            *positions_from_element(name),
             rule,
             "The function name '" + name + "' is not formated correctly.",
         )

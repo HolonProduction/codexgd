@@ -91,10 +91,10 @@ The code above will load a rule from `res://rules/custom_rule.py` given your cod
 > :warning: CodexGD will not load rules from outside the codexgd package by default because an untrusted project may execute code on your machine in this way. Pass the `--load-unsafe-code` option to the CLI to confirm that you know about the risks.
 
 **`variables`**  
-A dictionary of named values which may be used in the options of rules later. This allows to unify values which are needed by multiple rules like the prefix of private methods. The name of a variable should start with `<` and end with `>`.
+A dictionary of named values which may be used in the options of rules later. This allows to unify values which are needed by multiple rules like the prefix of private methods. Variables that are defined by inherited presets may be overwritten. When using the variable its name should be surrounded by `< >`.
 ```yaml
 variables:
-    <private-prefix>: "_"
+    private-prefix: "_"
 rules:
     function-names:
         level: "warn"

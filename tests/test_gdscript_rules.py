@@ -35,6 +35,46 @@ import pytest
             """var a = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001""",
             1,
         ),
+        # signal-names
+        ("""rules: {codexgd.rules.signal_names: "error"}""", """""", 0),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal hello_world""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal hello_world()""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal hello_world(test)""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal hello_world(test: int)""",
+            0,
+        ),
+        ("""rules: {codexgd.rules.signal_names: "error"}""", """signal a""", 0),
+        ("""rules: {codexgd.rules.signal_names: "error"}""", """signal abc""", 0),
+        ("""rules: {codexgd.rules.signal_names: "error"}""", """signal abc2d""", 0),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal SignalName""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal Signal_Name""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.signal_names: "error"}""",
+            """signal SIGNAL_NAME_2D""",
+            1,
+        ),
         # trailing-commas
         ("""rules: {codexgd.rules.trailing_commas: "error"}""", """""", 0),
         (

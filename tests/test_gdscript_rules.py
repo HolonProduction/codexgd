@@ -35,6 +35,231 @@ import pytest
             """var a = 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001""",
             1,
         ),
+        # parameter-names
+        ("""rules: {codexgd.rules.parameter_names: "error"}""", """""", 0),
+        ("""rules: {codexgd.rules.parameter_names: "error"}""", """signal a\n""", 0),
+        ("""rules: {codexgd.rules.parameter_names: "error"}""", """signal a(a)\n""", 0),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(hello_world)\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(a: int)\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(hello_world: int)\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(a_2d)\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(a_2d: int)\n""",
+            0,
+        ),
+        ("""rules: {codexgd.rules.parameter_names: "error"}""", """signal a(_a)""", 1),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(_a: int)\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(HelloWorld)\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """signal a(HelloWorld: int)\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a: int): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a: int = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a := 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(_a): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(_a = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(_a: int): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(_a: int = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(_a := 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_b): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_b = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_b: int): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_b: int = 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_b := 0): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_ = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_: int): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_: int = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(a_ := 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(aH): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(aH = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(aH: int): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(aH: int = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(aH := 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(HelloWorld): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(HelloWorld = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(HelloWorld: int): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(HelloWorld: int = 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """func a(HelloWorld := 0): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """var name:
+    set(v): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """var name:
+    set(_v): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """var name:
+    set(hello_world): pass\n""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """var name:
+    set(T): pass\n""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.parameter_names: "error"}""",
+            """var name:
+    set(HelloWorld): pass\n""",
+            1,
+        ),
         # signal-names
         ("""rules: {codexgd.rules.signal_names: "error"}""", """""", 0),
         (

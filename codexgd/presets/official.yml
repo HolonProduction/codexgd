@@ -36,3 +36,7 @@ rules:
     level: <base-severity>
     options:
       regex: null
+  codexgd.rules.parameter_names:
+    level: <base-severity>
+    options:
+      regex: null

@@ -33,6 +33,7 @@ class Severity(Enum):
 Options = Dict[str, Union[str, int, float, bool, None]]
 
 Parameter = TypeVarTuple("Parameter")
+Bindings = TypeVarTuple("Bindings")
 
 
 class CallbackDict(Protocol):
@@ -114,20 +115,30 @@ class Rule:
         self.origin = os.path.normpath(os.path.realpath(inspect.stack()[1][1]))
 
     def check(
-        self, callback: Callback[Unpack[Parameter]]
+        self, callback: Callback[Unpack[Parameter]], *bindings: Unpack[Bindings]
     ) -> Callable[
-        [Callable[[Unpack[Parameter], Options], Iterable[Problem]]],
-        Callable[[Unpack[Parameter], Options], Iterable[Problem]],
+        [
+            # pylint: disable-next=line-too-long
+            Callable[[Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]]  # type: ignore
+        ],
+        Callable[[Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]],  # type: ignore
     ]:
         def decorator(
             callable_to_connect: Callable[
-                [Unpack[Parameter], Options], Iterable[Problem]
+                [Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]  # type: ignore
             ]
-        ) -> Callable[[Unpack[Parameter], Options], Iterable[Problem]]:
+        ) -> Callable[
+            [Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]  # type: ignore
+        ]:
+            def bind(
+                *parameters: Unpack[Tuple[Unpack[Parameter], Options]]
+            ) -> Iterable[Problem]:
+                yield from callable_to_connect(*parameters, *bindings)
+
             if callback not in self.callbacks:
                 self.callbacks[callback] = []
             if callable_to_connect not in self.callbacks[callback]:
-                self.callbacks[callback].append(callable_to_connect)
+                self.callbacks[callback].append(bind)
             return callable_to_connect
 
         return decorator

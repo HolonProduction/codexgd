@@ -12,7 +12,6 @@ Options:
     -v --version        Show the current version.
     --load-unsafe-code  Load untrusted code from outside the CodexGD package if requested.
     --json              Output json data.
-    --
 
 Returns:
     0   The input conforms to the given codex file.

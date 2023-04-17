@@ -300,6 +300,100 @@ import pytest
             """signal SIGNAL_NAME_2D""",
             1,
         ),
+        # variable-names
+        (
+            """rules: {codexgd.rules.variable_names: "error"}""",
+            """var hi
+var hi = 1
+const HI = 1
+var hi: int
+var hi := 1
+const HI := 1
+var Hi: int = preload('''test.gd''')
+const Hi: int = preload('''test.gd''')
+var Hi: int = preload('test.gd')
+const Hi: int = preload('test.gd')
+var Hi = preload("test.gd")
+const Hi = preload("test.gd")
+var Hi : = preload(\"\"\"test.gd\"\"\")
+const Hi : = preload(\"\"\"test.gd\"\"\")
+
+func p():
+    var hi
+    var Hi = preload("t.gd")
+    const Hi = preload("t.gd")
+    var hi: int
+    var hi: int = 1
+    const HI: int = 1
+    const HI := 1
+    var hi := 1
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.variable_names: "error"}""",
+            """var Hi
+var Hi = 1
+const hi = 1
+var Hi: int
+var Hi := 1
+const hi := 1
+var hi: int = preload('''test.gd''')
+const hi: int = preload('''test.gd''')
+var hi: int = preload('test.gd')
+const hi: int = preload('test.gd')
+var hi = preload("test.gd")
+const hi = preload("test.gd")
+var hi : = preload(\"\"\"test.gd\"\"\")
+const hi : = preload(\"\"\"test.gd\"\"\")
+const HELLO__WORLD := 1
+
+func p():
+    var Hi
+    var hi = preload("t.gd")
+    const hi = preload("t.gd")
+    var Hi: int
+    var Hi: int = 1
+    const Hi: int = 1
+    var Hi := 1
+""",
+            22,
+        ),
+        (
+            """rules: {codexgd.rules.variable_names: "error"}""",
+            """var _hi
+var hi
+var Hi = preload("t.gd")
+var _hi
+var _Hi = preload("t.gd")
+var hello_world
+var HelloWorld = preload("t.gd")
+var a_b_c
+var _ABV = preload("t.gd")
+var node2d
+var Node2D = preload("t.gd")
+var node_2d
+const HELLO_WORLD = 1
+const _HELLO_WORLD = 2
+const H = 1
+const A_B_C = 1
+const HelloWorld = preload("t.gd")
+const _HelloWorld = preload("t.gd")
+func p():
+    var hi
+    var Hi = preload("t.gd")
+    var _hi
+    var _Hi = preload("t.gd")
+    var hello_world
+    var HelloWorld = preload("t.gd")
+    var a_b_c
+    var _ABV = preload("t.gd")
+    var node2d
+    var Node2D = preload("t.gd")
+    var node_2d
+""",
+            0,
+        ),
         # trailing-commas
         ("""rules: {codexgd.rules.trailing_commas: "error"}""", """""", 0),
         (

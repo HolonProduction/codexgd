@@ -1,4 +1,14 @@
-from typing import Dict, Callable, Iterable, Union, List, cast, Tuple, Optional
+from typing import (
+    Dict,
+    Callable,
+    Iterable,
+    Union,
+    List,
+    cast,
+    Tuple,
+    Optional,
+    overload,
+)
 
 from enum import Enum, unique
 
@@ -7,6 +17,7 @@ import os
 
 from typing_extensions import (
     TypeVarTuple,
+    TypeVar,
     Protocol,
     Any,
     Unpack,
@@ -33,7 +44,7 @@ class Severity(Enum):
 Options = Dict[str, Union[str, int, float, bool, None]]
 
 Parameter = TypeVarTuple("Parameter")
-Bindings = TypeVarTuple("Bindings")
+Bindings = TypeVar("Bindings")
 
 
 class CallbackDict(Protocol):
@@ -114,31 +125,69 @@ class Rule:
         # Correct the origin because __call__ is now called from this file.
         self.origin = os.path.normpath(os.path.realpath(inspect.stack()[1][1]))
 
+    @overload
     def check(
-        self, callback: Callback[Unpack[Parameter]], *bindings: Unpack[Bindings]
+        self,
+        callback: Callback[Unpack[Parameter]],
+        bindings: Any,  # TODO: Find a way to prevent `TypeVar` from inferring `Literal` types.
     ) -> Callable[
         [
             # pylint: disable-next=line-too-long
-            Callable[[Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]]  # type: ignore
+            Callable[[Unpack[Parameter], Options, Bindings], Iterable[Problem]]
         ],
-        Callable[[Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]],  # type: ignore
+        Callable[[Unpack[Parameter], Options, Bindings], Iterable[Problem]],
+    ]:
+        ...
+
+    @overload
+    def check(
+        self, callback: Callback[Unpack[Parameter]]
+    ) -> Callable[
+        [
+            # pylint: disable-next=line-too-long
+            Callable[[Unpack[Parameter], Options], Iterable[Problem]]
+        ],
+        Callable[[Unpack[Parameter], Options], Iterable[Problem]],
+    ]:
+        ...
+
+    def check(
+        self,
+        callback: Callback[Unpack[Parameter]],
+        bindings: Optional[Any] = None,
+    ) -> Union[
+        Callable[
+            [
+                # pylint: disable-next=line-too-long
+                Callable[[Unpack[Parameter], Options, Bindings], Iterable[Problem]]
+            ],
+            Callable[[Unpack[Parameter], Options, Bindings], Iterable[Problem]],
+        ],
+        Callable[
+            [
+                # pylint: disable-next=line-too-long
+                Callable[[Unpack[Parameter], Options], Iterable[Problem]]
+            ],
+            Callable[[Unpack[Parameter], Options], Iterable[Problem]],
+        ],
     ]:
         def decorator(
-            callable_to_connect: Callable[
-                [Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]  # type: ignore
-            ]
-        ) -> Callable[
-            [Unpack[Parameter], Options, Unpack[Bindings]], Iterable[Problem]  # type: ignore
-        ]:
-            def bind(
-                *parameters: Unpack[Tuple[Unpack[Parameter], Options]]
-            ) -> Iterable[Problem]:
-                yield from callable_to_connect(*parameters, *bindings)
-
+            callable_to_connect,
+        ):
             if callback not in self.callbacks:
                 self.callbacks[callback] = []
             if callable_to_connect not in self.callbacks[callback]:
-                self.callbacks[callback].append(bind)
+                if bindings is None:
+                    self.callbacks[callback].append(callable_to_connect)
+                else:
+
+                    def bind(
+                        *parameters: Unpack[Tuple[Unpack[Parameter], Options]]
+                    ) -> Iterable[Problem]:
+                        yield from callable_to_connect(*parameters, bindings)
+
+                    self.callbacks[callback].append(bind)
+
             return callable_to_connect
 
         return decorator

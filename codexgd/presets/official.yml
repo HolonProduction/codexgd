@@ -40,3 +40,10 @@ rules:
     level: <base-severity>
     options:
       regex: null
+  codexgd.rules.variable_names:
+    level: <base-severity>
+    options:
+      private-prefix: <private-prefix>
+      variable-regex: null
+      constant-regex: null
+      type-regex: null

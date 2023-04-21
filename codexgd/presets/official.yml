@@ -47,3 +47,5 @@ rules:
       variable-regex: null
       constant-regex: null
       type-regex: null
+  codexgd.rules.quotes:
+    level: <base-severity>

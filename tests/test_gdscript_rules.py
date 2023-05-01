@@ -669,6 +669,107 @@ class _PrivateClass: pass
             """enum __TestTest {}""",
             0,
         ),
+        # quotes
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = "" """,
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = '' """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = \"\"\"\"\"\" """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = '''''' """,
+            2,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = " " """,
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = ' ' """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = \"\"\" \"\"\" """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var string = ''' ''' """,
+            2,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = "'"\nvar a = "''"\nvar a = '"' """,
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '"Hello World"' """,
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '"Hello World\\'' """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '\\'' """,
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = \"\"\"\n\"\"\"""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '''\n'''""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = \"\"\"'''\n\"\"\"""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = \"\"\"'''\n""\\"\"\"\"""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '''\"\"\"\n''\\''''""",
+            1,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '''\"\"\"\n'''""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '''\n\"'''""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.quotes: {level: "error"}}""",
+            """var a = '''\"\n'''""",
+            1,
+        ),
     ],
 )
 def test_rule(config_str, code, n, config_file):

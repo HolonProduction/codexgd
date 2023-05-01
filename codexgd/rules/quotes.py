@@ -3,7 +3,7 @@
 TODO: Write docs.
 """
 
-from typing import Iterable, cast
+from typing import Iterable, cast, ClassVar
 
 from lark import Token
 
@@ -29,11 +29,46 @@ def quotes(tree: ParseTree, _options: Options):
 
     content = cast(str, extract_string(string))
     if is_multiline:
-        single = 0
-        double = 0
 
-        SINGLE = 0
-        DOUBLE = 1
+        class Quotes:
+            amount: int
+            char: str
+            last: bool
+            _single_count: ClassVar[int] = 0
+            _double_count: ClassVar[int] = 0
+
+            def __init__(self, char: str, amount: int, last: bool = False) -> None:
+                self.char = char
+                self.amount = amount
+                self.last = last
+                self._count()
+
+            def _count(self):
+                needs_escape = int(self.amount / 3)
+                if self.last and self.amount % 3 != 0:
+                    needs_escape += 1
+
+                if self.char == "'":
+                    self.__class__._single_count += needs_escape
+                else:
+                    self.__class__._double_count += needs_escape
+
+            def needs_escape(self) -> bool:
+                return (
+                    self.__class__._single_count < self.__class__._double_count
+                ) == (self.char == "'")
+
+            def get_optimal(self) -> str:
+                res = ""
+                for i in range(1, self.amount + 1):
+                    if (
+                        i % 3 == 0 or (i == self.amount and self.last)
+                    ) and self.needs_escape():
+                        res += "\\" + self.char
+                    else:
+                        res += self.char
+                return res
+
         structure = []
         structure.append("")
 
@@ -47,30 +82,17 @@ def quotes(tree: ParseTree, _options: Options):
                     strike = 0
                 escaping = not escaping
             elif char == "'":
+                strike += 1
                 escaping = False
-                if last == "'":
-                    strike += 1
-                    if strike == 2:
-                        strike = 0
-                        last = ""
-                        structure.append(SINGLE)
-                        single += 1
-                        continue
-
-                last = "'"
+                last = char
             elif char == '"':
+                strike += 1
                 escaping = False
-                if last == '"':
-                    strike += 1
-                    if strike == 2:
-                        strike = 0
-                        last = ""
-                        structure.append(DOUBLE)
-                        double += 1
-                        continue
-
-                last = '"'
+                last = char
             else:
+                if strike > 0:
+                    structure.append(Quotes(last, strike))
+
                 strike = 0
                 if isinstance(structure[-1], str):
                     structure[-1] += char
@@ -78,15 +100,16 @@ def quotes(tree: ParseTree, _options: Options):
                     structure.append(char)
                 last = char
 
-        escape_single = single < double
+        if strike > 0:
+            structure.append(Quotes(last, strike, True))
+
+        escape_single = Quotes._single_count < Quotes._double_count
         optimal = ""
         for i in structure:
             if isinstance(i, str):
                 optimal += i
-            elif i == SINGLE:
-                optimal += "\\'\\'\\'" if escape_single else "'''"
             else:
-                optimal += '"""' if escape_single else '\\"\\"\\"'
+                optimal += i.get_optimal()
     else:
         escape_single = content.count("'") < content.count('"')
 

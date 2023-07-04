@@ -770,6 +770,29 @@ class _PrivateClass: pass
             """var a = '''\"\n'''""",
             1,
         ),
+        # comment spacing
+        (
+            """rules: {codexgd.rules.comment_spacing: {level: "error"}}""",
+            """# Hello World
+# test 
+## Hello World
+## test 
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.comment_spacing: {level: "error"}}""",
+            """#Hello World
+#test 
+##Hello World
+##test 
+#  Hello World
+#  test 
+##  Hello World
+##  test 
+""",
+            8,
+        ),
     ],
 )
 def test_rule(config_str, code, n, config_file):

@@ -49,3 +49,5 @@ rules:
       type-regex: null
   codexgd.rules.quotes:
     level: <base-severity>
+  codexgd.rules.comment_spacing:
+    level: <base-severity>

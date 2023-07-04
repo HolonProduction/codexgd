@@ -37,6 +37,7 @@ class GDScriptCodex(Codex):
 
     plain_text = Callback[str]()
     parse_tree = ParseTreeCallback.factory
+    comment = Callback[Token]()
 
     def check(self, file: TextIO) -> Iterable[Problem]:
         code = file.read()
@@ -52,6 +53,10 @@ class GDScriptCodex(Codex):
         yield from self.notify(self.before_all)
         yield from self.notify(self.plain_text, code)
 
+        comments = self._get_comment_list(code)
+        for comment in comments:
+            yield from self.notify(self.comment, comment)
+
         parse_tree = self._build_parse_tree(code)
 
         visitor = _ParseTreeVisitor(self)
@@ -62,6 +67,10 @@ class GDScriptCodex(Codex):
 
     def _build_parse_tree(self, code: str) -> ParseTree:
         return parser.parse(code, True)
+
+    def _get_comment_list(self, code: str) -> List[Token]:
+        tree = parser.parse_comments(code)
+        return cast(List[Token], tree.children)
 
     def _construct_ignore_map(self, code: str) -> IgnoreMap:
         comments = parser.parse_comments(code)

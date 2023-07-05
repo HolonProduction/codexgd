@@ -20,4 +20,8 @@ rules:
   codexgd.rules.function_names:         
     options:
       connected-pascal-case: false
-
+  # The code is your documentation, but what about the others or future you?
+  codexgd.rules.require_doc_strings:
+    level: "warn"
+    options:
+      private-prefix: <private-prefix>

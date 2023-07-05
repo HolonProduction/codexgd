@@ -793,6 +793,71 @@ class _PrivateClass: pass
 """,
             8,
         ),
+        # require doc strings
+        (
+            """rules: {codexgd.rules.require_doc_strings: {level: "error"}}""",
+            """## A fuction
+func a_function():
+    pass
+
+## A variable
+var a_variable = 1
+
+## A signal
+signal a_signal()
+
+## A class
+class AClass:
+    pass
+""",
+            0,
+        ),
+        (
+            """rules: {codexgd.rules.require_doc_strings: {level: "error"}}""",
+            """func a_function():
+    pass
+
+var a_variable = 1
+
+signal a_signal()
+
+class AClass:
+    pass
+""",
+            4,
+        ),
+        (
+            """rules: {codexgd.rules.require_doc_strings: {level: "error"}}""",
+            """# A fuction
+func a_function():
+    pass
+
+# A variable
+var a_variable = 1
+
+# A signal
+signal a_signal()
+
+# A class
+class AClass:
+    pass
+""",
+            4,
+        ),
+        (
+            """rules: {codexgd.rules.require_doc_strings: {level: "error", options: {private-prefix: "__"}}}""",
+            """func __a_function():
+    pass
+
+var __a_variable = 1
+
+signal __a_signal()
+
+class __AClass:
+    pass
+""",
+            0,
+        ),
     ],
 )
 def test_rule(config_str, code, n, config_file):

@@ -22,11 +22,13 @@ rule.doc(__doc__)
 
 
 @rule.check(GDScriptCodex.plain_text)
-def before_all(code: str, _options: Options):
-    if len(code) == 0 or code[-1] != "\n":
+def plain_text(text: str, _options: Options):
+    if text.endswith("\n\n"):
         yield Problem(
-            (len(code.splitlines()), -1),
+            (-1, 0),
             (-1, -1),
             rule,
-            "Files should end with a newline.",
+            "The file should end with exactly one new line.",
         )
+    elif not text.endswith("\n"):
+        yield Problem((-1, 0), (-1, -1), rule, "The file should end with a new line.")

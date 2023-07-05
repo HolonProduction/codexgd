@@ -15,12 +15,26 @@ import pytest
 """,
             0,
         ),
+        (
+            """rules: {codexgd.rules.end_with_newline: "error"}""",
+            """
+
+""",
+            1,
+        ),
         ("""rules: {codexgd.rules.end_with_newline: "error"}""", """var a = "h" """, 1),
         (
             """rules: {codexgd.rules.end_with_newline: "error"}""",
             """var a = "h"
 """,
             0,
+        ),
+        (
+            """rules: {codexgd.rules.end_with_newline: "error"}""",
+            """var a = "h"
+
+""",
+            1,
         ),
         # line-length
         ("""rules: {codexgd.rules.line_length: "error"}""", """""", 0),
